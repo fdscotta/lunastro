@@ -1,0 +1,62 @@
+---
+import { runFetchMedia } from "~/lib/utils";
+
+const { banners } = Astro.props;
+---
+
+<section class="section-subheader">
+  <div class="container">
+    <div class="carousel-banners">
+      {
+        banners.map(async (banner: any) => {
+          let imageObj = await runFetchMedia(banner.banner_image);
+
+          // TODO - agregar la url de la imagen en el endpoint
+          const bannerImg =
+            imageObj.code == "rest_post_invalid_id" ? "" : imageObj.source_url;
+          return (
+            <div class="banner banner-big">
+              <div class="row justify-content-between">
+                <div class="col-md-5 pr-md-0">
+                  <div
+                    class={`banner-image ${banner.banner_image_fill_options ? banner.banner_image_fill_options : "image-cover"}`}
+                    style={`background-image:url('${bannerImg}')`}
+                  />
+                </div>
+                <div class="col-md-7 col-lg-6">
+                  <div class="banner-content">
+                    <div>
+                      {banner.banner_overtitle && (
+                        <p class="main-lead text-b-grey">
+                          <b>{banner.banner_overtitle}</b>
+                        </p>
+                      )}
+                      {banner.banner_title && (
+                        <h5 class="banner-title h4 mb-5">
+                          {banner.banner_title}
+                        </h5>
+                      )}
+                    </div>
+                    <div>
+                      {banner.banner_button_label != "" &&
+                        banner.banner_button_url.url != "" && (
+                          <a
+                            class="btn-link link-arrow"
+                            href={`${banner.banner_button_url.url}`}
+                            target={`${banner.banner_button_url.url_target ? banner.banner_button_url.url_target : "_self"}`}
+                            aria-label={`${banner.banner_button_label} ${banner.banner_title}`}
+                          >
+                            <span>{banner.banner_button_label}</span>
+                          </a>
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

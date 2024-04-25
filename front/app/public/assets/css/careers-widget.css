@@ -1,0 +1,72 @@
+/* GENERAL */
+.smartWidget {
+    overflow: auto;
+}
+.srJobList * {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"!important;
+}
+.srJobListTitles th,
+.srJobList td {
+    background: #FFFFFF!important;
+}
+/* TABLE TITLES */
+.srJobList .srJobListTitles * {
+    font-size: 13px!important;
+}
+.srJobListTitles th {
+    padding: 15px!important;
+    color: #000000!important;
+    white-space: nowrap!important;
+}
+/* TABLE BODY */
+.srJobList td {
+    font-size: 13px!important;
+    line-height: 20px!important;
+    padding: 15px 15px!important;
+    color: #676767!important;
+    border-top: 1px solid #DDDDDD!important;
+    position: relative;
+}
+.srJobList tr td:nth-child(1){
+    color: #37B4C8!important;
+    text-decoration: underline;
+    font-weight: bold!important;
+    padding-left: 50px!important;
+}
+/* HOVER ANIMATION */
+.srJobList tr td:nth-child(1)::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-left: 0px solid #37B4C8;
+    transition: 0.2s;
+}
+.srJobList tr:hover td:nth-child(1)::before {
+    border-left-width: 5px;
+}
+.srJobList tr td:nth-child(1)::after {
+    content: '';
+    display: block;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.2s;
+    height: 7px;
+    width: 12px;
+    background-position: center;
+    background-image: url(/wp-content/themes/mokatheme/assets/img/arrow-blue.svg);
+}
+.srJobList tr:hover td:nth-child(1)::after {
+    left: 20px;
+    opacity: 1;
+}
+/* DATE COLUMN */
+.srJobListPublishedSince {
+    text-align: right!important;
+}

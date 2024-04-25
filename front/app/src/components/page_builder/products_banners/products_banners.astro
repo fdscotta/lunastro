@@ -1,0 +1,47 @@
+---
+import * as pb_c from "~/components/page_builder/products_banners/index.js";
+import { runFetchMedia } from "~/lib/utils";
+
+const { pb } = Astro.props;
+---
+
+<!-- Products Banners -->
+<section class="section-subheader">
+  <div class="container">
+    {
+      pb.products_banners_title && (
+        <h2 class="h1 mb-5">{pb.products_banners_title}</h2>
+      )
+    }
+    <div class="row">
+      {
+        pb.products_banners.map(async (product: any) => {
+          const pb_image = await runFetchMedia(product.product_banner_image);
+          return (
+            <div class="col-lg-6 mb-3">
+              <div class="banner-product">
+                <div>
+                  <h4>{product.product_banner_title}</h4>
+                  <p class="display-text">
+                    {product.product_banner_description}
+                  </p>
+                </div>
+                <img
+                  class="mt-auto"
+                  src={`${pb_image.source_url}`}
+                  alt={`${product.product_banner_title}'s product front view`}
+                />
+                <div class="section-buttons-hover">
+                  <p class="display-text">{product.product_banner_content}</p>
+                  <div class="buttons-box">
+                    <pb_c.buttons pb={product} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

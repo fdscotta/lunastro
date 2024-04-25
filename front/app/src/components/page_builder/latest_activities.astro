@@ -1,0 +1,73 @@
+---
+const { la } = Astro.props;
+let headers = new Headers();
+headers.append("Authorization", "Basic bHVuYXBob3JlZGV2Omx1bmEyMDIx");
+const latestActivities = await fetch(
+  `https://lunaphoredev.wpengine.com/wp-json/v1/getLatestActivitiesBlock`,
+  {
+    headers: headers,
+    method: "GET",
+  }
+).then((response) => response.json());
+---
+
+<!-- Latest Activities -->
+<section class="section-subheader">
+  <div class="container">
+    <h4 class="h2 mb-3 text-center">
+      {latestActivities.subtitle}
+    </h4>
+    <div id="mainEventsContainer">
+      {
+        la.activities_selector.map((activity: any) => {
+          return (
+            <>
+              {latestActivities.activities[activity].posts.length > 0 && (
+                <h3 class="h6 display-text my-5 text-left text-dark">
+                  {latestActivities.activities[activity].activityTitle}
+                </h3>
+              )}
+              {latestActivities.activities[activity].posts.map(
+                (post: any, i: number, arr: []) => {
+                  return (
+                    <>
+                      <a
+                        class={`event-item latest-activities py-2 event-title ${arr.length - 1 === i && "border-bottom"}`}
+                        href={`${post.link}`}
+                        target="_self"
+                      >
+                        <div class="row d-flex align-items-center">
+                          <div class="col-md-3 col-lg-2 py-3 py-lg-0 py-md-0">
+                            <div class="pills-box mb-0">
+                              <span class="luna-pill gray">
+                                {post.post_type == "post"
+                                  ? "News"
+                                  : post.post_type}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="col-md-7 col-lg-8 py-3 py-lg-0 py-md-0">
+                            <h7 class="mb-2 mb-md-0 font-weight-bold">
+                              {post.title}
+                            </h7>
+                          </div>
+                          <div class="col-md-2 col-lg-2">
+                            <div>
+                              <p class="mb-1">
+                                <span>{post.date}</span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </>
+                  );
+                }
+              )}
+            </>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

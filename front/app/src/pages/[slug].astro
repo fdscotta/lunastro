@@ -1,0 +1,46 @@
+---
+import SiteLayout from "~/layouts/siteLayout.astro";
+import * as pageBuilder from "~/components/page_builder/index.js";
+import * as use from "~/components/utils/switch_case/index.js";
+import { runFetchPages } from "~/lib/utils";
+const { slug } = Astro.params;
+
+let page = await runFetchPages(slug);
+---
+
+{
+  page[0] !== undefined && (
+    <SiteLayout>
+      <section>
+        {page[0].acf?.flexible_content?.map((block: any) => {
+          const value = block.acf_fc_layout;
+          return (
+            <use.switch {value}>
+              <use.case slot={"banner"}>
+                <pageBuilder.banner banners={block.banners_repeater} />
+              </use.case>
+              <use.case slot={"content_features_list"}>
+                <pageBuilder.contentFList cfL={block} />
+              </use.case>
+              <use.case slot={"blockquote"}>
+                <pageBuilder.blockquote bq={block} />
+              </use.case>
+              <use.case slot={"products_banners"}>
+                <pageBuilder.productsBanners pb={block} />
+              </use.case>
+              <use.case slot={"customer_logos"}>
+                <pageBuilder.customerLogos cl={block} />
+              </use.case>
+              <use.case slot={"latest_activities"}>
+                <pageBuilder.latestActivities la={block} />
+              </use.case>
+              <use.default>
+                <pageBuilder.default compName={block.acf_fc_layout} />
+              </use.default>
+            </use.switch>
+          );
+        })}
+      </section>
+    </SiteLayout>
+  )
+}

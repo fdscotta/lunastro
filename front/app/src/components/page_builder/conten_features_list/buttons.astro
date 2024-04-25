@@ -1,0 +1,20 @@
+---
+const { cfL } = Astro.props;
+---
+
+{
+  cfL.content_f_buttons.map((button: any) => (
+    <a
+      class={`${button.button_type == "dark" ? "btn btn-primary mr-4 mb-4" : "btn btn-link link-arrow p-0 mr-4 mb-4"}`}
+      aria-label={`${button.title} + ',' + ${button.button_label}`}
+      href={`${button.button_link.url}`}
+      target={`${button.button_link.target}`}
+    >
+      {button.button_type == "link" ? (
+        <span>{button.button_label}</span>
+      ) : (
+        button.button_label
+      )}
+    </a>
+  ))
+}

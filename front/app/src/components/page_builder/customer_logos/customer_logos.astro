@@ -1,0 +1,48 @@
+---
+import * as cl_c from "~/components/page_builder/customer_logos/index.js";
+const { cl } = Astro.props;
+---
+
+<!-- Customer Logos -->
+<section class="section-default section-customer-logos my-5 pb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-11 text-center">
+        <div class="mt-4">
+          {
+            cl.customer_logos_over_title && (
+              <h6 class="h6 display-text mb-3">
+                {cl.customer_logos_over_title}
+              </h6>
+            )
+          }
+          {
+            cl.customer_logos_title && (
+              <h4 class="h1 mb-4 mb-md-5">{cl.customer_logos_title}</h4>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container p-0">
+    <div class="logos-list">
+      <div
+        class={`logos-list-track ${cl.customer_enable_loop == true && "animated"}`}
+      >
+        <div class="logos-group">
+          <cl_c.logos cl={cl} />
+        </div>
+        {
+          cl.customer_enable_loop == true && (
+            <>
+              <div class="logos-group">
+                <cl_c.logos cl={cl} />
+              </div>
+            </>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

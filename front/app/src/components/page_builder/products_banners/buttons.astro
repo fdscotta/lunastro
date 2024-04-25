@@ -1,0 +1,20 @@
+---
+const { pb } = Astro.props;
+---
+
+{
+  pb.product_banner_buttons.map((button: any) => (
+    <a
+      href={`${button.button_link.url}+${button.button_get}`}
+      class={`${button.button_type == "dark"} ? "btn btn-sm btn-primary" :"btn btn-sm btn-link link-arrow"`}
+      aria-label={`${button.button_label} about ${pb.product_banner_title}`}
+      target={`${button.button_link.target}`}
+    >
+      {button.button_type == "link" ? (
+        <span>{button.button_label}</span>
+      ) : (
+        button.button_label
+      )}
+    </a>
+  ))
+}

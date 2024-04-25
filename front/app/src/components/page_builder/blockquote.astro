@@ -1,0 +1,66 @@
+---
+import { runFetchMedia } from "~/lib/utils";
+
+const { bq } = Astro.props;
+
+const content_image = await runFetchMedia(bq.blockquote_content_image);
+
+const author_photo = await runFetchMedia(bq.blockquote_author_photo);
+
+const company_logo = await runFetchMedia(bq.blockquote_company_logo);
+---
+
+<!-- Blockquote -->
+<section class="section-subheader">
+  <div class="container p-0">
+    <blockquote class="testimonial-blockquote">
+      <div class="row m-0">
+        <div class="col">
+          {bq.blockquote_content}
+          <footer class="testimonial-author">
+            <div class="row align-items-center">
+              {
+                author_photo && (
+                  <div class="col-4 col-md-auto">
+                    <img
+                      src={`${author_photo.source_url}`}
+                      alt={`${bq.blockquote_author_name}'s profile portrait`}
+                    />
+                  </div>
+                )
+              }
+              {
+                company_logo && (
+                  <div class="col-8 col-md order-md-3 text-right">
+                    <img
+                      src={`${company_logo.source_url}`}
+                      alt={`${bq.blockquote_author_position}'s company logo`}
+                    />
+                  </div>
+                )
+              }
+              <div class="col-12 col-md-6 order-md-2 mt-3 mt-md-0">
+                <p class="mb-2"><b>{bq.blockquote_author_name}</b></p>
+                {
+                  bq.blockquote_author_position && (
+                    <p class="small">{bq.blockquote_author_position}</p>
+                  )
+                }
+              </div>
+            </div>
+          </footer>
+        </div>
+        {
+          content_image && (
+            <div class="col-lg-4 testimonial-image">
+              <img src={`${content_image.source_url}`} alt="" />
+              {bq.blockquote_content_image_description && (
+                <p>{bq.blockquote_content_image_description}</p>
+              )}
+            </div>
+          )
+        }
+      </div>
+    </blockquote>
+  </div>
+</section>

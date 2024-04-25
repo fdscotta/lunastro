@@ -1,0 +1,9 @@
+---
+const { cfL } = Astro.props;
+---
+
+{
+  cfL.content_f_title && (
+    <h4 class={`h${cfL.content_f_title_size} mb-4`}>{cfL.content_f_title}</h4>
+  )
+}

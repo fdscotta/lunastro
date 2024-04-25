@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="61px" viewBox="0 0 23 61" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Arrow</title>
+    <desc>Created with Sketch.</desc>
+    <g id="UI,-Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Cookies-message" transform="translate(-468.000000, -649.000000)" stroke="#888888">
+            <g id="Home">
+                <g id="Header">
+                    <g id="Arrow" transform="translate(469.000000, 649.000000)">
+                        <polyline id="Path-2" points="0 50 10.5 60.5 21 50"></polyline>
+                        <line x1="10.5" y1="60" x2="10.5" y2="0" id="Line"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

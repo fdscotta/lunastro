@@ -1,0 +1,292 @@
+---
+import { runFetchMedia, runFetchPages } from "~/lib/utils";
+
+const { slug } = Astro.params;
+// crear un custom endpoint para devolver solo el hero
+
+let header = await runFetchPages(slug);
+
+header = header[0];
+let header_text_style = "";
+let title = "";
+const siteUrl = "https://lunaphore.com";
+const header_title = header.acf.header_title;
+const header_content = header.acf.header_content;
+
+const header_background_image = header.acf.header_background_image;
+
+let imageObj = await runFetchMedia(header_background_image);
+
+// TODO - agregar la url de la imagen en el endpoint
+const bgImgSrc = imageObj.source_url;
+//const bgImgSrc = wp_get_attachment_image_src($header_background_image, 'hero_home')[0];
+
+const header_size = header.acf.header_size;
+
+if (header_size == "home") {
+  title = "1";
+  header_text_style = header.acf.header_text_style;
+} else {
+  title = "2";
+}
+// TODO - agregar en el custom endpoint la categoria
+/* if (get_top_term('resource-category')->slug == 'webinars'){
+	title = '3';
+} */
+
+const header_product_image = header.acf.header_product_image;
+
+// TODO - agregar fecha de creacion al endpoint
+const header_bg_video_block_id = 123456; //date_timestamp_get(date_create());
+const header_bg_video = header.acf.header_bg_video;
+const header_bg_video_id = header.acf.header_bg_video_id;
+const header_bg_video_selfhosted = header.acf.header_bg_video_selfhosted;
+
+const header_full_video_block_id = 1234566; //date_timestamp_get(date_create());
+const header_full_video = header.acf.header_full_video;
+const header_full_video_id = header.acf.header_full_video_id;
+const header_full_video_selfhosted = header.acf.header_full_video_selfhosted;
+const header_full_video_button = header.acf.header_full_video_button;
+
+const header_full_video_custom_link = header.acf.header_full_video_custom_link;
+
+const header_cta_gform_label = header.acf.header_cta_gform_label;
+const header_cta_gform_modal_shortcode =
+  header.acf.header_cta_gform_modal_shortcode;
+
+// TODO - agregar la obtencion de GF al endpoint
+const header_cta_gform_modal_id = 123; /* getGFIDFromShortcode(
+  header_cta_gform_modal_shortcode
+); */
+
+const textStyleColor =
+  /* header_text_style.color
+  ? header_text_style.color
+  : */ "text-white";
+let textStyleH =
+  /* header_text_style.horizontal_alignment
+  ? header_text_style.horizontal_alignment
+  : */ "text-left";
+let textStyleV =
+  /* header_text_style.vertical_alignment
+  ? header_text_style.vertical_alignment
+  :  */ "center";
+
+let textStyleContainer = "";
+
+switch (textStyleH) {
+  case "text-left":
+    textStyleContainer = "";
+    textStyleH = "";
+    break;
+
+  case "text-center":
+    textStyleContainer = "justify-content-center";
+    break;
+
+  case "text-right":
+    textStyleContainer = "justify-content-end";
+    break;
+
+  default:
+    break;
+}
+
+switch (textStyleV) {
+  case "center":
+    textStyleV = "align-items-center";
+    break;
+
+  case "top":
+    textStyleV = "";
+    break;
+
+  case "bottom":
+    textStyleV = "align-items-end";
+    break;
+
+  default:
+    break;
+}
+
+let removeImageFilter = "";
+if (header_size == "home") {
+  removeImageFilter = "hero-remove-image-filter";
+}
+---
+
+<header
+  class={`hero hero-${header_size} ${textStyleV} video-header ${bgImgSrc && "has-product"} ${removeImageFilter}`}
+  style={`background-image:url('${bgImgSrc}')`}
+>
+  <div class={`container ${textStyleH}`}>
+    <div class={`row ${textStyleContainer}`}>
+      <div class="col">
+        <h1 class={`display-${title} ${textStyleColor}`}>{header_title}</h1>
+        {
+          header_content && (
+            <p class={`lead ${textStyleColor}`}>{header_content}</p>
+          )
+        }
+        {
+          header_full_video != "none" ? (
+            header_full_video == "customlink" ? (
+              <a
+                class="btn btn-lg btn-primary btn-shadow mt-4"
+                type="button"
+                target="_blank"
+                href={`${header_full_video_custom_link}`}
+              >
+                {header_full_video_button}
+              </a>
+            ) : (
+              <button
+                class="btn btn-lg btn-primary btn-shadow mt-4"
+                type="button"
+                onclick={`playVideo${header_full_video_block_id}()`}
+              >
+                {header_full_video_button} <i class="fas fa-play-circle mr-2" />
+              </button>
+            )
+          ) : (
+            header_cta_gform_label && (
+              <button
+                class="btn btn-primary text-nowrap my-4"
+                data-toggle="modal"
+                data-target={`#${header_cta_gform_modal_id}`}
+              >
+                <span>{header_cta_gform_label}</span>
+              </button>
+            )
+          )
+        }
+      </div>
+      {
+        header_product_image && (
+          <div class="col-md-5">
+            <img
+              class="hero-product"
+              src={`${header_product_image}`}
+              alt={`${header_title}'s product front view`}
+            />
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  <!--
+	{header_bg_video != 'none' &&
+		<div class="player-bg">
+			{header_bg_video == 'selfhosted' ?
+				<video id={`playerIframeBg${header_bg_video_block_id}`} poster={`${bgImgSrc}`}>
+					<source src={`${header_bg_video_selfhosted}`} type="video/webm" />
+				</video>
+			:
+				<div
+					class="plyr"
+					id={`playerIframeBg${header_bg_video_block_id}`}
+					data-plyr-provider={`${header_bg_video}`}
+					data-plyr-embed-id={`${header_bg_video_id}`}
+				></div>
+			}
+		</div>
+
+ 		<script>
+			const playerIframeBg{header_bg_video_block_id} = new Plyr('#playerIframeBg${header_bg_video_block_id}', {
+				controls: [],
+				clickToPlay: false,
+				autoplay: true,
+				muted: true,
+				loop: { active: true },
+				origin: '${siteUrl}',
+			});
+
+			$(window).on('load', function () {
+				playerIframeBg${header_bg_video_block_id}.muted = true;
+			})
+
+			playerIframeBg${header_bg_video_block_id}.on('playing', function (event){
+				setTimeout(function(){
+					$('.player-bg').css('opacity',1);
+				}, 200);
+			});
+
+			$(window).on('load resize', function () {
+				var videoW = $('.player-bg').outerWidth();
+				var videoH = $('.player-bg').outerHeight();
+
+				if ( videoH < (videoW * 0.5612) ) {
+					$('.video-header .player-bg .plyr__video-embed__container').css('width', '100%');
+				} else {
+					$('.video-header .player-bg .plyr__video-embed__container').css('width', videoH / 0.5612 + 'px');
+				}
+			})
+		</script>
+	}
+-->
+</header>
+<!--
+header_full_video == 'none' && header_cta_gform_label != '' && // ver como
+resolver el printGFMODAL //echo printGFModal($header_cta_gform_modal_shortcode,
+null)
+-->
+<!--
+{header_full_video != 'none' ?
+	<div id="d-video-<?php echo $header_full_video_block_id;?>" class="d-video">
+		{header_full_video == 'selfhosted' ?
+			<video id="player<?php echo $header_full_video_block_id;?>" poster="<?php echo $bgImgSrc;?>" playsinline controls>
+				<source src="<?php echo $header_full_video_selfhosted;?>" type="video/mp4" />
+			</video>
+		:
+			<div
+				class="plyr"
+				id="player<?php echo $header_full_video_block_id;?>"
+				data-plyr-provider="<?php echo $header_full_video;?>"
+				data-plyr-embed-id="<?php echo $header_full_video_id;?>"
+			></div>
+		}
+
+		<button type="button" class="close" onclick="stopVideo<?php echo $header_full_video_block_id;?>();">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<script>
+		const player${header_full_video_block_id} = new Plyr('#player${header_full_video_block_id}', {
+			controls:[
+				'play-large',
+				'play',
+				'mute',
+				'volume',
+				'progress',
+				'current-time',
+				'fullscreen',
+			]
+		});
+
+		function playVideo${header_full_video_block_id}() {
+			player${header_full_video_block_id}.play();
+			$('body').css('overflow','hidden');
+			$('#d-video-<?php echo $header_full_video_block_id;?>').addClass('playing');
+		}
+
+		player${header_full_video_block_id}.on('ended', function(event){
+			$('body').css('overflow','');
+			$('#d-video-<?php echo $header_full_video_block_id;?>').removeClass('playing');
+		});
+
+		function stopVideo${header_full_video_block_id}() {
+			player<?php echo $header_full_video_block_id;?>.stop();
+			$('body').css('overflow','');
+			$('#d-video-<?php echo $header_full_video_block_id;?>').removeClass('playing');
+			playerIframeBg${header_full_video_block_id}.play();
+		}
+
+		$(document).keyup(function(e) {
+			if (e.keyCode === 27) {
+				stopVideo${header_full_video_block_id}();
+			}
+		});
+	</script>
+} -->

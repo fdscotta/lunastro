@@ -1,0 +1,108 @@
+---
+import * as cfl_c from "~/components/page_builder/conten_features_list/index.js";
+import { runFetchMedia } from "~/lib/utils";
+const { cfL } = Astro.props;
+let contentCol1 = "col-lg-12";
+let contentCol2 = "col-lg-12";
+
+if (cfL.content_f_columns == "columns") {
+  contentCol1 = "col-lg-5";
+  contentCol2 = "col-lg-6";
+}
+
+let itemsCol = "col-lg-12 d-flex align-items-start";
+
+if (cfL.content_f_columns == "full") {
+  if (cfL.content_f_lists_columns == "2") {
+    itemsCol = "col-lg-6 d-flex align-items-start";
+  } else if (cfL.content_f_lists_columns == "4") {
+    itemsCol = "col-md-6 col-lg-3";
+  }
+}
+---
+
+<!-- Content + Featured lists -->
+<section class="section-subheader">
+  <div class="container">
+    <div class="row justify-content-lg-between justify-content-center">
+      <div class={`${contentCol1}`}>
+        <cfl_c.h3 cfL={cfL} />
+        <cfl_c.h4 cfL={cfL} />
+        <cfl_c.highlighted cfL={cfL} />
+
+        {
+          cfL.content_f_columns == "grid" && (
+            <div class="d-flex align-items-start mb-lg-4 mb-4">
+              <span class="bullet-line mr-4" />
+              <div class="flex-fill">
+                {cfL.content_f_buttons.length > 0 && (
+                  <div class="mb-5">
+                    <cfl_c.buttons cfL={cfL} />
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        }
+        {
+          cfL.content_f_columns != "grid" &&
+            cfL.content_f_buttons.length > 0 && (
+              <div class="mb-5">
+                <cfl_c.buttons cfL={cfL} />
+              </div>
+            )
+        }
+      </div>
+      <div class={`${contentCol2}`}>
+        {
+          cfL.content_f_featured_lists.map((featuredList: any) => {
+            return (
+              <>
+                <cfl_c.h5 cfL={cfL} />
+
+                <div class="row mb-5">
+                  {featuredList.list_items.map(async (item: any) => {
+                    let imageObj = await runFetchMedia(item.list_item_icon);
+                    return (
+                      <>
+                        <div class={`${itemsCol}`}>
+                          {featuredList.list_type === "icon" && (
+                            <img
+                              class="mr-3"
+                              width="65"
+                              src={imageObj.source_url}
+                              alt=""
+                            />
+                          )}
+                          {featuredList.list_type === "check" && (
+                            <img
+                              class="mr-3"
+                              width="30"
+                              src="https://lunaphore.com/assets/img/checkmark.svg"
+                              alt=""
+                            />
+                          )}
+                          <div class="mb-4">
+                            {item.list_item_title && (
+                              <h6 class="pt-1">{item.list_item_title}</h6>
+                            )}
+                            {item.list_item_text && item.list_item_text}
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>
+<!-- {modalList &&
+	{% for modal in modalList %}
+		{{ function('printGFModal', modal , null) }}
+	{% endfor %}
+} -->

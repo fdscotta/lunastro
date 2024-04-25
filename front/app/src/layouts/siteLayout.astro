@@ -1,0 +1,18 @@
+---
+import Footer from "~/components/layout/footer.astro";
+import Head from "~/components/layout/head.astro";
+import Hero from "~/components/layout/hero.astro";
+import Menu from "~/components/layout/menu.astro";
+---
+
+<html lang="en-GB">
+  <Head />
+  <body>
+    <main>
+      <Menu />
+      <Hero />
+      <slot />
+      <Footer />
+    </main>
+  </body>
+</html>

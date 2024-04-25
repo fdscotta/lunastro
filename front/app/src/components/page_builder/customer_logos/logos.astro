@@ -1,0 +1,16 @@
+---
+import { runFetchMedia } from "~/lib/utils";
+
+const { cl } = Astro.props;
+---
+
+{
+  cl.customer_logos_logos.map(async (logo: any) => {
+    const imageObj = await runFetchMedia(logo.image);
+    return (
+      <div class="logo-img">
+        <img src={`${imageObj.source_url}`} alt={`${logo.image.title}`} />
+      </div>
+    );
+  })
+}
