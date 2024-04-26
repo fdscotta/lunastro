@@ -1,9 +1,10 @@
 ---
+const LUNA_URL_SITE = import.meta.env.LUNA_URL_SITE;
 const { la } = Astro.props;
 let headers = new Headers();
 headers.append("Authorization", "Basic bHVuYXBob3JlZGV2Omx1bmEyMDIx");
 const latestActivities = await fetch(
-  `https://lunaphoredev.wpengine.com/wp-json/v1/getLatestActivitiesBlock`,
+  `${LUNA_URL_SITE}/wp-json/v1/getLatestActivitiesBlock`,
   {
     headers: headers,
     method: "GET",

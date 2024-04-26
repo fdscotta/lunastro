@@ -1,3 +1,4 @@
+const LUNA_URL_SITE = import.meta.env.LUNA_URL_SITE;
 
 export async function runFetchMedia (mediaID) {
     let headers = new Headers();
@@ -8,7 +9,7 @@ export async function runFetchMedia (mediaID) {
     let imageObj = null;
     if (mediaID !== '') {
         imageObj = await fetch(
-            `https://lunaphoredev.wpengine.com/wp-json/wp/v2/media/${mediaID}`,
+            `${LUNA_URL_SITE}/wp-json/wp/v2/media/${mediaID}`,
             {
                 headers: headers,
                 method: "GET",
@@ -25,7 +26,7 @@ export async function runFetchPages (pageID) {
         "Basic bHVuYXBob3JlZGV2Omx1bmEyMDIx"
     );
     let header = await fetch(
-        `https://lunaphoredev.wpengine.com/wp-json/wp/v2/pages?slug=${pageID}`,
+        `${LUNA_URL_SITE}/wp-json/wp/v2/pages?slug=${pageID}`,
         {
             headers: headers,
             method: "GET",
