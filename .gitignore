@@ -1,3 +1,4 @@
 .DS_Store
 front/app/.vercel
 front/app/node_modules
+front/app/dist
