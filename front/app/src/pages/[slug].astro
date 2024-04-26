@@ -3,6 +3,11 @@ import SiteLayout from "~/layouts/siteLayout.astro";
 import * as pageBuilder from "~/components/page_builder/index.js";
 import * as use from "~/components/utils/switch_case/index.js";
 import { runFetchPages } from "~/lib/utils";
+
+export function getStaticPaths() {
+  return [{ params: { slug: "home" } }];
+}
+
 const { slug } = Astro.params;
 
 let page = await runFetchPages(slug);
